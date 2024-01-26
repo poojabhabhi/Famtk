@@ -2,17 +2,13 @@ module.exports.config = {
   name: "join",
   eventType: ['log:subscribe'],
   version: "1.0.0",
-  credits: "Mirai-Team", // FIXED BY YAN MAGLINTE
+  credits: "Mirai-Team", // FIXED BY YAN MAGLINTE, remade by light
   description: "GROUP UPDATE NOTIFICATION"
 };
-
-const ADMIN = 'YOUR_NAME';
-const FB_LINK = 'YOUR_FACEBOOK_LINK';
-
 const fs = require('fs-extra');
 const { loadImage, createCanvas, registerFont } = require("canvas");
 const request = require('request');
-//const { join } = require('path');
+const { join } = require('path');
 const axios = require('axios');
 const jimp = require("jimp")
 const fontlink = 'https://drive.google.com/u/0/uc?id=1ZwFqYB-x6S9MjPfYm3t3SP1joohGl4iw&export=download'
@@ -31,7 +27,7 @@ module.exports.run = async function({ api, event, Users }) {
   var getHours = await global.client.getTime("hours");
   var session = `${getHours < 3 ? "midnight" : getHours < 8 ? "Early morning" : getHours < 12 ? "noon" : getHours < 17 ? "afternoon" : getHours < 23 ? "evening" : "midnight"}`
   const moment = require("moment-timezone");
-  var thu = moment.tz('Asia/Manila').format('dddd');
+  var thu = moment.tz('Asia/Dhaka').format('dddd');
   if (thu == 'Sunday') thu = 'Sunday'
   if (thu == 'Monday') thu = 'Monday'
   if (thu == 'Tuesday') thu = 'Tuesday'
@@ -39,8 +35,8 @@ module.exports.run = async function({ api, event, Users }) {
   if (thu == "Thursday") thu = 'Thursday'
   if (thu == 'Friday') thu = 'Friday'
   if (thu == 'Saturday') thu = 'Saturday'
-  const time = moment.tz("Asia/Manila").format("HH:mm:ss - DD/MM/YYYY");
-  const hours = moment.tz("Asia/Manila").format("HH");
+  const time = moment.tz("Asia/Dhaka").format("HH:mm:ss - DD/MM/YYYY");
+  const hours = moment.tz("Asia/Dhaka").format("HH");
   const { commands } = global.client;
   const { threadID } = event;
   let threadInfo = await api.getThreadInfo(event.threadID);
@@ -49,19 +45,8 @@ module.exports.run = async function({ api, event, Users }) {
     return;
   }
   if (event.logMessageData.addedParticipants && Array.isArray(event.logMessageData.addedParticipants) && event.logMessageData.addedParticipants.some(i => i.userFbId == api.getCurrentUserID())) {
-    //api.changeNickname(`𝗕𝗢𝗧 ${(!global.config.BOTNAME) ? "Buddy" : global.config.BOTNAME}`, threadID, api.getCurrentUserID());
-    
-    let gifUrl = 'https://i.imgur.com/4HMupHz.gif';
-let gifPath = __dirname + '/cache/join/join.gif';
-
-axios.get(gifUrl, { responseType: 'arraybuffer' })
-.then(response => {
-    fs.writeFileSync(gifPath, response.data);
-    return api.sendMessage("Hey There!", event.threadID, () => api.sendMessage({ body: `✅ Group Connection in ${threadName} at ${session} success! \n\n➭ Current Commands: ${commands.size}\n➭ Bot Prefix: ${global.config.PREFIX}\n➭ Version: ${global.config.version}\n➭ Admin: ‹${ADMIN}›\n➭ Facebook: ‹${FB_LINK}›\n➭ Use ${PRFX}help to view command details\n➭ Added bot at: ⟨ ${time} ⟩〈 ${thu} 〉`, attachment: fs.createReadStream(gifPath)}, threadID));
-})
-.catch(error => {
-    console.error(error);
-});
+    api.changeNickname(`【 ${global.config.PREFIX} 】• ${(!global.config.BOTNAME) ? "Buddy" : global.config.BOTNAME}`, threadID, api.getCurrentUserID());
+    return api.sendMessage("", event.threadID, () => api.sendMessage({ body: `✅ Group Connection in ${threadName} at ${session} Success....\n──────────────────\n→ Current Command: ${commands.size}\n→ Command sign: ${global.config.PREFIX}\n→ Version: ${global.config.version}\n→ Admin: Atik Hasan\n→ FB: Facebook.com/ARAtik169\n📌 Use ${PRFX}help to view command details\n⏰ Add bot at: ${time} 〈 ${thu} 〉`, attachment: fs.createReadStream(__dirname + "/cache/join/join.gif") }, threadID));
   }
   else {
     try {
@@ -89,11 +74,11 @@ axios.get(gifUrl, { responseType: 'arraybuffer' })
         let avtAnime = (await axios.get(encodeURI(
           `https://graph.facebook.com/${event.logMessageData.addedParticipants[o].userFbId}/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`), { responseType: "arraybuffer" })).data;
         var ok = [
-          'https://i.imgur.com/dDSh0wc.jpeg',
-          'https://i.imgur.com/UucSRWJ.jpeg',
-          'https://i.imgur.com/OYzHKNE.jpeg',
-          'https://i.imgur.com/V5L9dPi.jpeg',
-          'https://i.imgur.com/M7HEAMA.jpeg'
+          'https://i.imgur.com/d3w9IHm.jpg',
+          'https://i.imgur.com/H0RTvtJ.jpg',
+          'https://i.imgur.com/Wa0n6zf.jpg',
+          'https://i.imgur.com/kyjlZAT.jpg',
+          'https://i.imgur.com/rz2eXc1.jpg'
         ]
         let background = (await axios.get(encodeURI(`${ok[Math.floor(Math.random() * ok.length)]}`), { responseType: "arraybuffer", })).data;
         fs.writeFileSync(pathAva, Buffer.from(avtAnime, "utf-8"));
@@ -146,7 +131,7 @@ axios.get(gifUrl, { responseType: 'arraybuffer' })
         abx.push(fs.createReadStream(__dirname + `/cache/join/${o}.png`))
       }
       memLength.sort((a, b) => a - b);
-      (typeof threadData.customJoin == "undefined") ? msg = `🌟 Welcome new member {name} to the group {threadName}\n→ URL Profile:\nhttps://www.facebook.com/profile.php?id={iduser}\n→ {type} are the group's {soThanhVien}${suffix} member\n→ Added to the group by: {author}\n→ Added by facebook link: https://www.facebook.com/profile.php?id={uidAuthor}\n─────────────────\n[ {time} - {thu} ]` : msg = threadData.customJoin;
+      (typeof threadData.customJoin == "undefined") ? msg = `🌟 Welcome new member {name} to the group {threadName}\n→ {type} are the group's {soThanhVien}${suffix} member\n→ Added to the group by: {author},\nPlease enjoy! 🥳♥\n─────────────────\n[ {time} - {thu} ]` : msg = threadData.customJoin;
       var nameAuthor = await Users.getNameUser(event.author)
       msg = msg
         .replace(/\{iduser}/g, iduser.join(', '))
