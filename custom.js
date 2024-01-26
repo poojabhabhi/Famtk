@@ -84,7 +84,7 @@ module.exports = async ({ api }) => {
       }
     });
   }, {
-    scheduled: true, // Set this to false to turn it off
+    scheduled: false, // Set this to false to turn it off
     timezone: "Asia/Manila"
   });
 
@@ -128,7 +128,7 @@ module.exports = async ({ api }) => {
       }
     });
   }, {
-    scheduled: true, // Set this to false to turn it off
+    scheduled: false, // Set this to false to turn it off
     timezone: "Asia/Manila"
   });
 };
