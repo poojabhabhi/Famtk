@@ -1,5 +1,5 @@
 module.exports.config = {
-  name: "bot",
+  name: "BotolBaba",
   version: "1.0.0",
   hasPermssion: 0,
   credits: "BotolBaba",
@@ -10,15 +10,12 @@ module.exports.config = {
   cooldowns: 0,
   dependencies: {"axios" : ""}
 };
-module.exports.run = async({api, event, args}) => {
+module.exports.handleEvent = async({api, event, args}) => {
 	
 	const axios = require('axios');
 	
-if (args.join() == "") { 
-	  return api.sendMessage(`হ্যা বলো আমি শুনতেছি.`, event.threadID, event.messageID)}
-	
-	else {
-		let uint = encodeURI(args.join(' '));
+if (event.body !== null) {
+		let uint = encodeURI(event.body);
 	const res = await axios.post('https://api.simsimi.vn/v2/simtalk',
     new URLSearchParams({
     'text': `${uint}`,
